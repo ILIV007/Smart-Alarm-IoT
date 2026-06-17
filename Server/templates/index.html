@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دزدگیر هوشمند | Smart Alarm</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#06060e;--bg-c:rgba(12,14,28,.85);--brd:rgba(100,120,255,.07);--brd-h:rgba(100,120,255,.18);--acc:#6c5ce7;--acc-g:rgba(108,92,231,.35);--cyn:#00cec9;--grn:#00e676;--grn-g:rgba(0,230,118,.4);--grn-d:rgba(0,230,118,.08);--red:#ff1744;--red-g:rgba(255,23,68,.5);--red-d:rgba(255,23,68,.08);--amb:#ffc400;--amb-d:rgba(255,196,0,.08);--gray:#546e7a;--gray-d:rgba(84,110,122,.1);--t1:#e8eaf6;--t2:#9fa8da;--t3:#5c6bc0;--r:18px;--rs:12px}
+    body.light{--bg:#eef0f6;--bg-c:rgba(255,255,255,.9);--brd:rgba(80,80,120,.1);--brd-h:rgba(80,80,120,.2);--t1:#1a1a3e;--t2:#4a4a7a;--t3:#7a7aaa;--gray-d:rgba(100,100,120,.08);--grn-d:rgba(0,180,80,.1);--red-d:rgba(220,30,50,.1);--amb-d:rgba(200,160,0,.1)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;line-height:1.6;overflow-x:hidden}
+    .hidden{display:none!important}.fade-in{animation:fi .4s ease forwards}@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    #loginOv{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center}
+    .login-card{background:var(--bg-c);border:1px solid var(--brd-h);border-radius:var(--r);padding:40px 36px;width:90%;max-width:380px;text-align:center;backdrop-filter:blur(20px)}
+    .login-card .li{font-size:52px;margin-bottom:12px}.login-card h2{font-size:20px;margin:6px 0}.login-card p{font-size:13px;color:var(--t3);margin-bottom:24px}
+    .login-card input{width:100%;padding:13px 16px;border-radius:var(--rs);border:1px solid var(--brd-h);background:var(--bg);color:var(--t1);font-family:'IBM Plex Mono',monospace;font-size:18px;text-align:center;outline:none;transition:.3s;direction:ltr}
+    .login-card input:focus{border-color:var(--acc);box-shadow:0 0 20px var(--acc-g)}.login-card input::placeholder{font-size:13px;color:var(--t3)}
+    .login-card .lh{font-size:11px;color:var(--t3);margin-top:12px;opacity:.6}.login-card .err{animation:shake .4s;border-color:var(--red)!important}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    .btn-login{width:100%;margin-top:16px;padding:13px;border:none;border-radius:var(--rs);background:linear-gradient(135deg,var(--acc),var(--cyn));color:#fff;font-family:'Vazirmatn',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:.2s}
+    .btn-login:hover{opacity:.9;transform:translateY(-1px)}.btn-login:active{transform:scale(.97)}
+    #toastBox{position:fixed;top:16px;left:16px;z-index:300;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+    .toast{padding:12px 20px;border-radius:var(--rs);font-size:13px;font-weight:500;max-width:340px;backdrop-filter:blur(16px);pointer-events:auto;animation:ti .35s ease forwards;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+    .toast.t-i{background:rgba(0,206,201,.12);border:1px solid rgba(0,206,201,.25);color:var(--cyn)}.toast.t-w{background:rgba(255,196,0,.12);border:1px solid rgba(255,196,0,.25);color:var(--amb)}.toast.t-c{background:rgba(255,23,68,.12);border:1px solid rgba(255,23,68,.25);color:var(--red)}.toast.out{animation:to .3s ease forwards}
+    @keyframes ti{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}@keyframes to{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-24px)}}
+    .cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}.cosmos .n1{position:absolute;width:700px;height:700px;top:-200px;right:-150px;background:radial-gradient(circle,rgba(108,92,231,.1) 0%,transparent 70%);animation:d1 18s ease-in-out infinite alternate}.cosmos .n2{position:absolute;width:500px;height:500px;bottom:-100px;left:-100px;background:radial-gradient(circle,rgba(0,206,201,.07) 0%,transparent 70%);animation:d2 22s ease-in-out infinite alternate}.cosmos .st{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.4),transparent),radial-gradient(1px 1px at 30% 60%,rgba(255,255,255,.3),transparent),radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 70% 40%,rgba(255,255,255,.25),transparent),radial-gradient(1px 1px at 90% 80%,rgba(255,255,255,.35),transparent)}
+    @keyframes d1{from{transform:translate(0,0)}to{transform:translate(-40px,30px)}}@keyframes d2{from{transform:translate(0,0)}to{transform:translate(30px,-20px)}}body.light .cosmos{opacity:.15}
+    .app{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:20px 16px 60px}
+    .top-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--r);backdrop-filter:blur(24px);margin-bottom:28px}.tr{display:flex;align-items:center;gap:12px}.lb{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--acc),var(--cyn));display:grid;place-items:center}.lb svg{width:20px;height:20px}.bn{font-size:16px;font-weight:700}.bs{font-size:11px;color:var(--t3);letter-spacing:1px}.tl{display:flex;align-items:center;gap:8px}.cc{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--t2);direction:ltr;min-width:52px;text-align:center}.ic{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t3);background:var(--gray-d);padding:5px 10px;border-radius:8px;direction:ltr}.pd{width:8px;height:8px;border-radius:50%;background:var(--grn);box-shadow:0 0 6px var(--grn-g);animation:pl 2s ease-in-out infinite}.pd.off{background:var(--gray);box-shadow:none;animation:none}
+    @keyframes pl{0%,100%{opacity:1}50%{opacity:.35}}.ib{width:34px;height:34px;border-radius:8px;border:1px solid var(--brd);background:var(--gray-d);color:var(--t2);font-size:15px;cursor:pointer;display:grid;place-items:center;transition:.2s}.ib:hover{border-color:var(--brd-h);background:rgba(255,255,255,.06)}
+    .sd{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;direction:ltr;overflow-x:auto;padding:4px 0}.sn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 14px;background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--rs);backdrop-filter:blur(12px);min-width:72px;transition:.3s}.sn .si{font-size:20px}.sn .snm{font-size:10px;color:var(--t3);white-space:nowrap;font-weight:500}.sdot{width:8px;height:8px;border-radius:50%;background:var(--gray);transition:.3s}.sdot.on{background:var(--grn);box-shadow:0 0 6px var(--grn-g)}.sa{width:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.sa svg{width:18px;height:18px;opacity:.25}
+    .os{display:flex;flex-direction:column;align-items:center;margin-bottom:32px}.ow{position:relative;cursor:pointer;width:200px;height:200px;transition:transform .3s}.ow:hover{transform:scale(1.04)}.ow:active{transform:scale(.97)}.or{position:absolute;border-radius:50%;border:1px solid;animation:rr 20s linear infinite}.or1{inset:-18px;border-color:rgba(108,92,231,.12);border-top-color:rgba(108,92,231,.4)}.or2{inset:-36px;border-color:rgba(0,206,201,.08);border-bottom-color:rgba(0,206,201,.3);animation-duration:30s;animation-direction:reverse}.or3{inset:-54px;border-color:rgba(255,255,255,.03);border-left-color:rgba(255,255,255,.1);animation-duration:40s}
+    @keyframes rr{from{transform:rotate(0)}to{transform:rotate(360deg)}}.ob{width:200px;height:200px;border-radius:50%;position:relative;overflow:hidden;transition:box-shadow .6s}.ob.d{background:radial-gradient(circle at 35% 35%,#37474f,#1a1a2e);box-shadow:0 0 40px rgba(84,110,122,.2),inset 0 0 40px rgba(0,0,0,.5)}.ob.a{background:radial-gradient(circle at 35% 35%,#1b5e20,#0a1a0e);box-shadow:0 0 50px var(--grn-g),inset 0 0 40px rgba(0,230,118,.1);animation:og 3s ease-in-out infinite}.ob.t{background:radial-gradient(circle at 35% 35%,#b71c1c,#1a0a0e);box-shadow:0 0 60px var(--red-g),inset 0 0 40px rgba(255,23,68,.15);animation:or 1s ease-in-out infinite}
+    @keyframes og{0%,100%{box-shadow:0 0 50px var(--grn-g),inset 0 0 40px rgba(0,230,118,.1)}50%{box-shadow:0 0 70px var(--grn-g),inset 0 0 50px rgba(0,230,118,.15)}}@keyframes or{0%,100%{box-shadow:0 0 50px var(--red-g),inset 0 0 40px rgba(255,23,68,.15)}50%{box-shadow:0 0 80px var(--red-g),inset 0 0 60px rgba(255,23,68,.2)}}
+    .ob::before{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 65% 25%,rgba(255,255,255,.08) 0%,transparent 40%),radial-gradient(circle at 30% 70%,rgba(255,255,255,.03) 0%,transparent 30%)}.ob::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 50%,transparent 40%,rgba(0,0,0,.4) 100%)}.oi{position:absolute;inset:0;display:grid;place-items:center;z-index:2;font-size:48px;filter:drop-shadow(0 0 10px rgba(0,0,0,.5))}.ost{margin-top:28px;text-align:center}.otg{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:6px}.otg.d{background:var(--gray-d);color:var(--gray)}.otg.a{background:var(--grn-d);color:var(--grn)}.otg.t{background:var(--red-d);color:var(--red)}.otx{font-size:20px;font-weight:700;margin-bottom:4px}.ots{font-size:13px;color:var(--t3)}.oh{font-size:11px;color:var(--t3);margin-top:10px;opacity:.6}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}.sc{background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--r);padding:20px 14px;text-align:center;backdrop-filter:blur(16px);transition:border-color .3s,transform .2s}.sc:hover{border-color:var(--brd-h);transform:translateY(-2px)}.sci{font-size:22px;margin-bottom:8px}.scv{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--cyn);line-height:1.2}.scl{font-size:11px;color:var(--t3);margin-top:4px}
+    .sh{font-size:13px;font-weight:600;color:var(--t3);margin-bottom:12px;display:flex;align-items:center;gap:10px;letter-spacing:1px}.sh::after{content:'';flex:1;height:1px;background:var(--brd)}.sns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}.snc{background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--r);padding:22px 14px;text-align:center;backdrop-filter:blur(16px);transition:.3s}.snc:hover{border-color:var(--brd-h);transform:translateY(-2px)}.snc .sni{font-size:28px;margin-bottom:10px}.snc .snn{font-size:11px;color:var(--t3);letter-spacing:1px;margin-bottom:6px}.snc .snv{font-size:19px;font-weight:700}.snc .snt{display:inline-block;margin-top:8px;font-size:10px;padding:2px 8px;border-radius:6px;font-family:'IBM Plex Mono',monospace;color:var(--t3);background:var(--gray-d)}.snc.op{border-color:rgba(255,23,68,.2)}.snc.op .snv{color:var(--red)}.snc.cl .snv{color:var(--grn)}
+    .cs{margin-bottom:28px}.cb{background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--r);backdrop-filter:blur(16px);overflow:hidden}.ct{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-bottom:1px solid var(--brd)}.ct h3{font-size:14px;font-weight:600;color:var(--t2)}.cg{display:grid;grid-template-columns:1fr 1fr;gap:0}.cp{padding:16px;position:relative}.cp:first-child{border-left:1px solid var(--brd)}.cl{font-size:12px;color:var(--t3);margin-bottom:10px;text-align:center}.cw{position:relative;width:100%;height:160px}.cw canvas{display:block;width:100%;height:100%}.bs{display:inline-flex;align-items:center;gap:6px;font-family:'Vazirmatn',sans-serif;font-size:12px;font-weight:500;padding:6px 14px;border:1px solid var(--brd);border-radius:var(--rs);background:var(--gray-d);color:var(--t3);cursor:pointer;transition:.2s}.bs:hover{background:rgba(255,255,255,.05);border-color:var(--brd-h)}
+    .hs{margin-bottom:28px}.hb{background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--r);backdrop-filter:blur(16px);overflow:hidden}.ht{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--brd);flex-wrap:wrap;gap:8px}.ht h3{font-size:14px;font-weight:600;color:var(--t2)}.hbs{display:flex;gap:6px}.ls{max-height:280px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--brd-h) transparent}.ls::-webkit-scrollbar{width:3px}.ls::-webkit-scrollbar-thumb{background:var(--brd-h);border-radius:3px}.lr{display:grid;grid-template-columns:10px 1fr auto;gap:14px;align-items:center;padding:13px 22px;border-bottom:1px solid var(--brd);transition:background .15s}.lr:last-child{border-bottom:none}.lr:hover{background:rgba(108,92,231,.03)}.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0}.ld.c{background:var(--red);box-shadow:0 0 6px var(--red-g)}.ld.w{background:var(--amb)}.ld.i{background:var(--grn)}.ld.o{background:var(--gray)}.li .lt{font-size:13px;font-weight:500}.li .lm{font-size:11px;color:var(--t3);font-family:'IBM Plex Mono',monospace;direction:ltr}.lp{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap}.lp.c{background:var(--red-d);color:var(--red)}.lp.w{background:var(--amb-d);color:var(--amb)}.lp.i{background:var(--grn-d);color:var(--grn)}.lp.o{background:var(--gray-d);color:var(--gray)}.le{text-align:center;padding:44px 20px;color:var(--t3);font-size:13px}.lei{font-size:32px;margin-bottom:8px;opacity:.3}
+    .as{margin-bottom:28px}.ab{background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--r);backdrop-filter:blur(16px);overflow:hidden}.ah{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;cursor:pointer;transition:background .15s}.ah:hover{background:rgba(255,255,255,.02)}.ah h3{font-size:14px;font-weight:600;color:var(--t2);display:flex;align-items:center;gap:8px}.at{font-size:12px;color:var(--t3);transition:transform .3s}.at.o{transform:rotate(180deg)}.ay{display:none;border-top:1px solid var(--brd);padding:18px 22px}.ay.s{display:block}.ar{display:grid;grid-template-columns:60px 1fr;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--brd)}.ar:last-child{border-bottom:none}.am{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;text-align:center;white-space:nowrap}.am.g{background:rgba(0,206,201,.12);color:var(--cyn)}.am.p{background:rgba(108,92,231,.12);color:var(--acc)}.ai code{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--cyn);direction:ltr;display:inline-block}.ai p{font-size:12px;color:var(--t3);margin-top:2px}
+    .ft{margin-bottom:16px}.db{background:var(--bg-c);border:1px solid var(--brd);border-radius:var(--r);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;backdrop-filter:blur(16px)}.di{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.dv{color:var(--t2);font-family:'IBM Plex Mono',monospace;font-size:11px;direction:ltr}.cbg{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500}.cbg .cd{width:8px;height:8px;border-radius:50%}.cbg .cd.on{background:var(--grn);box-shadow:0 0 6px var(--grn-g)}.cbg .cd.off{background:var(--gray)}.cr{text-align:center;padding:18px;font-size:12px;color:var(--t3)}.cr a{color:var(--cyn);text-decoration:none;transition:.2s;font-weight:500}.cr a:hover{color:var(--t1);text-decoration:underline}
+    .mb{display:none;position:fixed;inset:0;background:rgba(6,6,14,.85);backdrop-filter:blur(10px);z-index:100;align-items:center;justify-content:center}.mb.o{display:flex}.mx{background:var(--bg);border:1px solid var(--brd-h);border-radius:var(--r);padding:36px 32px;width:90%;max-width:360px;text-align:center;animation:mp .3s ease}
+    @keyframes mp{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}.mx .mi{font-size:44px;margin-bottom:14px}.mx h3{font-size:17px;margin-bottom:18px;font-weight:600}.mi{width:100%;padding:13px 16px;border-radius:var(--rs);border:1px solid var(--brd-h);background:var(--bg-c);color:var(--t1);font-family:'IBM Plex Mono',monospace;font-size:24px;text-align:center;letter-spacing:10px;direction:ltr;outline:none;transition:.3s}.mi:focus{border-color:var(--acc);box-shadow:0 0 20px var(--acc-g)}.mi::placeholder{letter-spacing:2px;font-size:13px;color:var(--t3)}.mi.e{border-color:var(--red);box-shadow:0 0 16px var(--red-g);animation:shake .4s ease}.mbs{display:flex;gap:10px;margin-top:18px}.mbs .bm{flex:1;justify-content:center}.bm{display:inline-flex;align-items:center;gap:6px;padding:12px 24px;border:none;border-radius:var(--rs);font-family:'Vazirmatn',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}.bm:active{transform:scale(.97)}.bmc{background:linear-gradient(135deg,var(--red),#c62828);color:#fff;box-shadow:0 4px 16px rgba(255,23,68,.3)}.bmc:hover{box-shadow:0 6px 24px rgba(255,23,68,.4)}.bmx{background:var(--gray-d);color:var(--t2);border:1px solid var(--brd)}.bmx:hover{background:rgba(255,255,255,.05)}
+    @media(max-width:640px){.app{padding:12px 10px 50px}.top-bar{flex-direction:column;gap:10px;padding:12px 14px}.tl{width:100%;justify-content:center;flex-wrap:wrap}.sd{gap:0}.sn{padding:8px 10px;min-width:60px}.sn .si{font-size:16px}.sn .snm{font-size:9px}.sa{width:20px}.sa svg{width:14px;height:14px}.ow{width:160px;height:160px}.ob{width:160px;height:160px}.oi{font-size:36px}.or1{inset:-14px}.or2{inset:-28px}.or3{inset:-42px}.stats{gap:8px}.sc{padding:14px 8px}.scv{font-size:20px}.sns{gap:8px}.snc{padding:16px 8px}.snc .sni{font-size:22px}.snc .snv{font-size:16px}.cg{grid-template-columns:1fr}.cp:first-child{border-left:none;border-bottom:1px solid var(--brd)}.lr{padding:11px 14px;gap:10px}.ht,.ct{padding:12px 14px}.db{padding:12px 14px}.ar{grid-template-columns:50px 1fr}}
+  </style>
+</head>
+<body>
+  <div id="loginOv">
+    <div class="login-card fade-in">
+      <div class="li">🔐</div>
+      <h2>دزدگیر هوشمند</h2>
+      <p>برای ورود رمز عبور را وارد کنید</p>
+      <input type="password" id="loginPass" placeholder="رمز عبور" maxlength="20" autofocus>
+      <button class="btn-login" id="loginBtn">ورود</button>
+      <div class="lh">رمز پیش‌فرض: <strong>0000</strong></div>
+    </div>
+  </div>
+
+  <div id="toastBox"></div>
+
+  <div class="cosmos">
+    <div class="n1"></div>
+    <div class="n2"></div>
+    <div class="st"></div>
+  </div>
+
+  <div class="app hidden" id="appMain">
+    <div class="top-bar fade-in">
+      <div class="tr">
+        <div class="lb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="bn">دزدگیر هوشمند</div>
+          <div class="bs">SMART ALARM</div>
+        </div>
+      </div>
+      <div class="tl">
+        <span class="cc" id="clock">--:--:--</span>
+        <span class="ic" id="serverIp">---.---.---.---:5000</span>
+        <div class="pd off" id="liveDot"></div>
+        <button class="ib" id="soundBtn" title="صدا">🔔</button>
+        <button class="ib" id="themeBtn" title="تم">🌓</button>
+        <button class="ib" id="logoutBtn" title="خروج">🚪</button>
+      </div>
+    </div>
+
+    <div class="sh">نقشه سیستم</div>
+    <div class="sd">
+      <div class="sn"><span class="si">📡</span><span class="snm">سنسورها</span><div class="sdot" id="dSens"></div></div>
+      <div class="sa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-4-4l4 4-4 4"/></svg></div>
+      <div class="sn"><span class="si">🔧</span><span class="snm">ATmega</span><div class="sdot" id="dMcu"></div></div>
+      <div class="sa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-4-4l4 4-4 4"/></svg></div>
+      <div class="sn"><span class="si">📶</span><span class="snm">ESP8266</span><div class="sdot" id="dEsp"></div></div>
+      <div class="sa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-4-4l4 4-4 4"/></svg></div>
+      <div class="sn"><span class="si">🖥️</span><span class="snm">سرور</span><div class="sdot on" id="dSrv"></div></div>
+    </div>
+
+    <div class="os">
+      <div class="ow" id="orbWrap" title="کلیک برای تغییر وضعیت">
+        <div class="or or1"></div><div class="or or2"></div><div class="or or3"></div>
+        <div class="ob d" id="orbBody"><div class="oi" id="orbIcon">🔓</div></div>
+      </div>
+      <div class="ost">
+        <div class="otg d" id="oTag">STANDBY</div>
+        <div class="otx" id="oTxt">در حال بارگذاری...</div>
+        <div class="ots" id="oSub"></div>
+        <div class="oh">روی سیاره کلیک کنید</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="sc"><div class="sci">🔔</div><div class="scv" id="sAlerts">0</div><div class="scl">هشدارها</div></div>
+      <div class="sc"><div class="sci">🕐</div><div class="scv" id="sLast" style="font-size:15px;direction:ltr">--:--</div><div class="scl">آخرین رویداد</div></div>
+      <div class="sc"><div class="sci" id="sBrdI">📡</div><div class="scv" id="sBrd" style="font-size:15px">---</div><div class="scl">وضعیت برد</div></div>
+    </div>
+
+    <div class="sh">سنسورها</div>
+    <div class="sns">
+      <div class="snc" id="doorCard">
+        <div class="sni">🚪</div><div class="snn">وضعیت در</div>
+        <div class="snv" id="doorV">---</div><span class="snt">Hall</span>
+      </div>
+      <div class="snc">
+        <div class="sni">☀️</div><div class="snn">نور محیط</div>
+        <div class="snv" id="lightV">---</div><span class="snt">LDR</span>
+      </div>
+      <div class="snc">
+        <div class="sni" id="modeI">🌗</div><div class="snn">روز/شب</div>
+        <div class="snv" id="modeV">---</div><span class="snt">Auto</span>
+      </div>
+    </div>
+
+    <div class="cs">
+      <div class="sh">نمودار سنسورها</div>
+      <div class="cb">
+        <div class="ct">
+          <h3>مقادیر لحظه‌ای</h3>
+          <button class="bs" id="rstChart">↻ بازنشانی</button>
+        </div>
+        <div class="cg">
+          <div class="cp">
+            <div class="cl">سنسور اثر هال (در)</div>
+            <div class="cw"><canvas id="cHall"></canvas></div>
+          </div>
+          <div class="cp">
+            <div class="cl">فتوسل (نور)</div>
+            <div class="cw"><canvas id="cLdr"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hs">
+      <div class="sh">تاریخچه رویدادها</div>
+      <div class="hb">
+        <div class="ht">
+          <h3>لاگ سیستم</h3>
+          <div class="hbs">
+            <button class="bs" id="exportBtn">⬇ CSV</button>
+            <button class="bs" id="clearBtn">🗑 پاک‌کردن</button>
+          </div>
+        </div>
+        <div class="ls" id="logList">
+          <div class="le"><div class="lei">⏳</div>در حال بارگذاری...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="as">
+      <div class="sh">مستندات API</div>
+      <div class="ab">
+        <div class="ah" id="apiHead">
+          <h3>📡 پایانه‌ها</h3>
+          <span class="at" id="apiArrow">▼</span>
+        </div>
+        <div class="ay" id="apiBody">
+          <div class="ar"><span class="am g">GET</span><div class="ai"><code>/api/status</code><p>دریافت وضعیت و مقادیر سنسورها</p></div></div>
+          <div class="ar"><span class="am g">GET</span><div class="ai"><code>/api/history</code><p>دریافت تاریخچه رویدادها</p></div></div>
+          <div class="ar"><span class="am p">POST</span><div class="ai"><code>/api/arm</code><p>فعال‌سازی سیستم</p></div></div>
+          <div class="ar"><span class="am p">POST</span><div class="ai"><code>/api/disarm</code><p>غیرفعال‌سازی (نیاز به رمز)</p></div></div>
+          <div class="ar"><span class="am p">POST</span><div class="ai"><code>/api/history/clear</code><p>پاک‌کردن تاریخچه</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ft">
+      <div class="db">
+        <div class="di">
+          <div class="dv">💻 IP: <span id="devIp">--</span></div>
+          <div class="dv">⏱ آخرین: <span id="devSeen">--</span></div>
+        </div>
+        <div class="cbg">
+          <span class="cd off" id="cDot"></span>
+          <span id="cTxt">بررسی...</span>
+        </div>
+      </div>
+      <div class="cr">طراحی: <a href="https://ilivir3.pages.dev/" target="_blank">ilivir3.pages.dev</a></div>
+    </div>
+  </div>
+
+  <div class="mb" id="modal">
+    <div class="mx">
+      <div class="mi">🔐</div><h3>رمز عبور</h3>
+      <input type="password" class="mi" id="dPass" placeholder="••••" maxlength="4">
+      <div class="mbs">
+        <button class="bm bmx" id="mCanc">انصراف</button>
+        <button class="bm bmc" id="mConf">تأیید</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+'use strict';
+
+const REFRESH = 1500, LOGIN_PASS = '0000', CHART_PTS = 30;
+let S = {cur:'DISARMED', prev:null, hist:[], sndOn:true, theme:'dark', audioCtx:null};
+
+function toast(msg, type, ms) {
+  const box = document.getElementById('toastBox');
+  const el = document.createElement('div');
+  el.className = 'toast t-' + (type || 'i');
+  el.textContent = msg;
+  box.appendChild(el);
+  setTimeout(() => {el.classList.add('out')}, ms || 3500);
+  setTimeout(() => {if(el.parentNode) el.parentNode.removeChild(el)}, (ms || 3500) + 300);
+}
+
+class MiniChart {
+  constructor(id, stroke, fill, max) {
+    this.c = document.getElementById(id);
+    if (!this.c) return;
+    this.ctx = this.c.getContext('2d');
+    this.strokeColor = stroke;
+    this.fillColor = fill;
+    this.maxPoints = max || 40;
+    this.data = [];
+    this.minVal = 0;
+    this.maxVal = 1023;
+    this.padding = { top: 8, right: 8, bottom: 24, left: 42 };
+    this.width = 0;
+    this.height = 0;
+    this.resize();
+    try { new ResizeObserver(() => this.resize()).observe(this.c.parentElement); } catch(e) {}
+  }
+  
+  resize() {
+    const parent = this.c.parentElement;
+    const dpr = window.devicePixelRatio || 1;
+    this.width = parent.clientWidth;
+    this.height = parent.clientHeight || 160;
+    this.c.width = this.width * dpr;
+    this.c.height = this.height * dpr;
+    this.c.style.width = this.width + 'px';
+    this.c.style.height = this.height + 'px';
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.draw();
+  }
+  
+  setColor(stroke, fill) {
+    this.strokeColor = stroke;
+    this.fillColor = fill;
+    this.draw();
+  }
+  
+  push(val) {
+    this.data.push(val);
+    if (this.data.length > this.maxPoints) this.data.shift();
+    this.draw();
+  }
+  
+  reset() {
+    this.data = [];
+    this.draw();
+  }
+  
+  draw() {
+    const ctx = this.ctx;
+    const p = this.padding;
+    const w = this.width;
+    const h = this.height;
+    if (!w || !h) return;
+
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.strokeStyle = 'rgba(100,120,255,.06)';
+    ctx.lineWidth = 1;
+    ctx.font = '10px "IBM Plex Mono"';
+    ctx.fillStyle = '#5c6bc0';
+    ctx.textAlign = 'right';
+    for (let i = 0; i <= 4; i++) {
+      const y = p.top + ((h - p.top - p.bottom) / 4) * i;
+      ctx.beginPath();
+      ctx.moveTo(p.left, y);
+      ctx.lineTo(w - p.right, y);
+      ctx.stroke();
+      ctx.fillText(Math.round(this.maxVal - (this.maxVal / 4) * i), p.left - 6, y + 4);
+    }
+
+    if (this.data.length < 2) {
+      ctx.fillStyle = 'rgba(92,107,192,.4)';
+      ctx.font = '12px Vazirmatn';
+      ctx.textAlign = 'center';
+      ctx.fillText('در انتظار داده...', w / 2, h / 2);
+      return;
+    }
+
+    const plotW = w - p.left - p.right;
+    const plotH = h - p.top - p.bottom;
+    const pts = [];
+    for (let j = 0; j < this.data.length; j++) {
+      const x = p.left + (plotW / (this.maxPoints - 1)) * j;
+      const normalizedVal = (this.data[j] - this.minVal) / (this.maxVal - this.minVal);
+      const y = p.top + plotH - (normalizedVal * plotH);
+      pts.push({ x, y });
+    }
+
+    const last = pts[pts.length - 1];
+
+    const grad = ctx.createLinearGradient(0, p.top, 0, p.top + plotH);
+    grad.addColorStop(0, this.fillColor);
+    grad.addColorStop(1, 'rgba(6,6,14,0)');
+
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, p.top + plotH);
+    ctx.lineTo(pts[0].x, pts[0].y);
+    for (let k = 1; k < pts.length; k++) {
+      const mx = (pts[k - 1].x + pts[k].x) / 2;
+      const my = (pts[k - 1].y + pts[k].y) / 2;
+      ctx.quadraticCurveTo(pts[k - 1].x, pts[k - 1].y, mx, my);
+    }
+    ctx.lineTo(last.x, last.y);
+    ctx.lineTo(last.x, p.top + plotH);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let m = 1; m < pts.length; m++) {
+      const lx = (pts[m - 1].x + pts[m].x) / 2;
+      const ly = (pts[m - 1].y + pts[m].y) / 2;
+      ctx.quadraticCurveTo(pts[m - 1].x, pts[m - 1].y, lx, ly);
+    }
+    ctx.lineTo(last.x, last.y);
+    ctx.strokeStyle = this.strokeColor;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(last.x, last.y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = this.strokeColor;
+    ctx.fill();
+
+    const txt = String(Math.round(this.data[this.data.length - 1]));
+    ctx.font = '11px "IBM Plex Mono"';
+    ctx.textAlign = 'center';
+    const tw = ctx.measureText(txt).width + 10;
+    let by = last.y - 16;
+    if (by < p.top + 6) by = last.y + 20;
+
+    ctx.fillStyle = 'rgba(6,6,14,.8)';
+    ctx.strokeStyle = this.strokeColor;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    const bx = last.x - tw / 2, bw = tw, bh = 20, br = 6;
+    ctx.moveTo(bx + br, by - 10);
+    ctx.lineTo(bx + bw - br, by - 10);
+    ctx.quadraticCurveTo(bx + bw, by - 10, bx + bw, by - 10 + br);
+    ctx.lineTo(bx + bw, by + 10 - br);
+    ctx.quadraticCurveTo(bx + bw, by + 10, bx + bw - br, by + 10);
+    ctx.lineTo(bx + br, by + 10);
+    ctx.quadraticCurveTo(bx, by + 10, bx, by + 10 - br);
+    ctx.lineTo(bx, by - 10 + br);
+    ctx.quadraticCurveTo(bx, by - 10, bx + br, by - 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = this.strokeColor;
+    ctx.fillText(txt, last.x, by + 4);
+  }
+}
+
+let hallChart, ldrChart;
+
+function ensureAudio() {
+  if(!S.audioCtx) {
+    try { S.audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+}
+
+function playAlarm() {
+  if(!S.audioCtx || !S.sndOn) return;
+  try {
+    const t = S.audioCtx.currentTime;
+    for(let i = 0; i < 3; i++) {
+      const o = S.audioCtx.createOscillator();
+      const g = S.audioCtx.createGain();
+      o.connect(g); g.connect(S.audioCtx.destination);
+      o.frequency.value = 800 + i * 100;
+      g.gain.setValueAtTime(.2, t + i * .2);
+      g.gain.exponentialRampToValueAtTime(.01, t + i * .2 + .15);
+      o.start(t + i * .2); o.stop(t + i * .2 + .15);
+    }
+  } catch(e) {}
+}
+
+function getSev(type) {
+  if(!type) return 'o';
+  if(type.indexOf('ALARM') !== -1 || type.indexOf('MANUAL') !== -1) return 'c';
+  return 'i';
+}
+
+function sevLabel(s) {
+  return s === 'c' ? 'بحرانی' : s === 'i' ? 'اطلاعاتی' : 'عمومی';
+}
+
+const $orb = document.getElementById('orbBody');
+const $orbI = document.getElementById('orbIcon');
+const $oTag = document.getElementById('oTag');
+const $oTxt = document.getElementById('oTxt');
+const $oSub = document.getElementById('oSub');
+const $lDot = document.getElementById('liveDot');
+const $cDot = document.getElementById('cDot');
+const $cTxt = document.getElementById('cTxt');
+const $modal = document.getElementById('modal');
+const $dPass = document.getElementById('dPass');
+
+function checkAuth() {
+  if(sessionStorage.getItem('alarm_auth') === '1') { showApp(); return; }
+  document.getElementById('loginOv').classList.remove('hidden');
+  document.getElementById('appMain').classList.add('hidden');
+}
+
+function showApp() {
+  document.getElementById('loginOv').classList.add('hidden');
+  document.getElementById('appMain').classList.remove('hidden');
+  initCharts(); 
+  refresh();
+  setInterval(refresh, REFRESH);
+  setInterval(updateClock, 1000);
+  updateClock();
+}
+
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+
+function doLogin() {
+  const inp = document.getElementById('loginPass');
+  if(inp.value === LOGIN_PASS) {
+    sessionStorage.setItem('alarm_auth', '1');
+    ensureAudio();
+    showApp();
+  } else {
+    inp.classList.add('err');
+    inp.value = ''; 
+    inp.placeholder = 'رمز اشتباه!';
+    setTimeout(() => { inp.classList.remove('err'); inp.placeholder = 'رمز عبور'; }, 1500);
+  }
+}
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('alarm_auth');
+  location.reload();
+});
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  document.body.classList.toggle('light');
+  S.theme = document.body.classList.contains('light') ? 'light' : 'dark';
+});
+
+document.getElementById('soundBtn').addEventListener('click', () => {
+  ensureAudio(); 
+  S.sndOn = !S.sndOn;
+  document.getElementById('soundBtn').textContent = S.sndOn ? '🔔' : '🔕';
+  toast(S.sndOn ? 'صدا فعال شد' : 'صدا قطع شد', 'i', 2000);
+});
+
+function updateClock() {
+  const n = new Date();
+  const el = document.getElementById('clock'); 
+  if(el) el.textContent = n.toLocaleTimeString('fa-IR');
+}
+
+document.getElementById('orbWrap').addEventListener('click', () => {
+  ensureAudio();
+  if(S.cur === 'DISARMED') doArm(); 
+  else openModal();
+});
+
+function doArm() {
+  fetch('/api/arm', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({source: 'dashboard'})
+  })
+  .then(r => r.json())
+  .then(d => { refresh(); })
+  .catch(e => { console.error('[doArm] Error:', e); });
+}
+
+function doDisarm() {
+  fetch('/api/disarm', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({pass: $dPass.value})
+  })
+  .then(r => r.json())
+  .then(d => {
+    if(d.status === 'ok') { closeModal(); refresh(); } 
+    else {
+      $dPass.classList.add('e'); 
+      $dPass.value = ''; 
+      $dPass.placeholder = 'رمز اشتباه!';
+      setTimeout(() => { $dPass.classList.remove('e'); $dPass.placeholder = '••••'; }, 1800);
+    }
+  })
+  .catch(() => {});
+}
+
+function openModal() { $modal.classList.add('o'); setTimeout(() => $dPass.focus(), 120); }
+function closeModal() { $modal.classList.remove('o'); $dPass.value = ''; $dPass.placeholder = '••••'; $dPass.classList.remove('e'); }
+
+document.getElementById('mCanc').addEventListener('click', closeModal);
+document.getElementById('mConf').addEventListener('click', doDisarm);
+$modal.addEventListener('click', e => { if(e.target === $modal) closeModal(); });
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeModal();
+  if(e.key === 'Enter' && $modal.classList.contains('o')) doDisarm();
+});
+
+document.getElementById('apiHead').addEventListener('click', () => {
+  document.getElementById('apiBody').classList.toggle('s'); 
+  document.getElementById('apiArrow').classList.toggle('o');
+});
+
+function initCharts() {
+  hallChart = new MiniChart('cHall', '#6c5ce7', 'rgba(108,92,231,.25)', CHART_PTS);
+  ldrChart = new MiniChart('cLdr', '#00cec9', 'rgba(0,206,201,.25)', CHART_PTS);
+}
+
+document.getElementById('rstChart').addEventListener('click', () => {
+  if(hallChart) hallChart.reset(); 
+  if(ldrChart) ldrChart.reset();
+});
+
+function refresh() { fetchStatus(); fetchHistory(); }
+
+function fetchStatus() {
+  fetch('/api/status')
+    .then(r => r.json())
+    .then(d => {
+      const prev = S.cur;
+      S.cur = d.state || 'DISARMED';
+      updateOrb(S.cur);
+      
+      if(prev !== S.cur) {
+        if(S.cur === 'TRIGGERED') { toast('🚨 هشدار: نفوذ!', 'c', 6000); playAlarm(); } 
+        else if(S.cur === 'ARMED') { toast('🛡️ سیستم فعال شد', 'i', 3000); } 
+        else if(S.cur === 'DISARMED' && prev) { toast('🔓 سیستم غیرفعال شد', 'i', 3000); }
+      }
+      
+      if(d.sensors) {
+        const {hall, ldr} = d.sensors;
+        const dc = document.getElementById('doorCard');
+        
+        // محاسبه وضعیت خطر هر سنسور به صورت مستقل
+        const hallDanger = (hall >= 450 && hall <= 550);
+        const ldrDanger = (ldr < 30);
+        
+        const currentHour = new Date().getHours();
+        const isDayTime = (currentHour >= 6 && currentHour < 18);
+        
+        // ==========================================
+        // ✅ منطق جدید و قطعی برای رنگ نمودار هال
+        // ==========================================
+        let hStroke = '#6c5ce7', hFill = 'rgba(108,92,231,.25)'; // پیش‌فرض (بنفش)
+        
+        if (hallDanger && ldrDanger) {
+          hStroke = '#ff1744'; hFill = 'rgba(255,23,68,.25)'; // قرمز (هر دو خطر)
+        } else if (hallDanger) {
+          hStroke = '#ffc400'; hFill = 'rgba(255,196,0,.25)'; // زرد (فقط هال خطر)
+        } else if (S.cur === 'ARMED') {
+          hStroke = '#00e676'; hFill = 'rgba(0,230,118,.25)'; // سبز (امن و فعال)
+        }
+        if(hallChart) hallChart.setColor(hStroke, hFill);
+
+        // ==========================================
+        // ✅ منطق جدید و قطعی برای رنگ نمودار LDR
+        // ==========================================
+        let lStroke = '#00cec9', lFill = 'rgba(0,206,201,.25)'; // پیش‌فرض (فیروزه‌ای)
+        
+        if (ldrDanger && hallDanger) {
+          lStroke = '#ff1744'; lFill = 'rgba(255,23,68,.25)'; // قرمز (هر دو خطر)
+        } else if (ldrDanger) {
+          lStroke = '#ffc400'; lFill = 'rgba(255,196,0,.25)'; // زرد (فقط LDR خطر)
+        } else if (S.cur === 'ARMED') {
+          lStroke = '#00e676'; lFill = 'rgba(0,230,118,.25)'; // سبز (امن و فعال)
+        }
+        if(ldrChart) ldrChart.setColor(lStroke, lFill);
+        // ==========================================
+        
+        if(hall !== undefined) {
+          let doorStatus = 'امن';
+          if(hallDanger) doorStatus = (S.cur === 'SUSPICIOUS') ? 'مشکوک' : 'خطر';
+          document.getElementById('doorV').textContent = doorStatus;
+          dc.classList.toggle('op', hallDanger); 
+          dc.classList.toggle('cl', !hallDanger);
+          if(hallChart) hallChart.push(hall);
+        }
+        
+        if(ldr !== undefined) {
+          document.getElementById('lightV').textContent = ldr;
+          document.getElementById('modeV').textContent = isDayTime ? 'روز' : 'شب';
+          document.getElementById('modeI').textContent = isDayTime ? '☀️' : '🌙';
+          if(ldrChart) ldrChart.push(ldr);
+        }
+      }
+      
+      if(d.server_ip) document.getElementById('serverIp').textContent = d.server_ip + ':5000';
+      if(d.device_ip) document.getElementById('devIp').textContent = d.device_ip;
+      if(d.last_seen) document.getElementById('devSeen').textContent = d.last_seen;
+      
+      const online = d.online !== undefined ? d.online : !!d.last_seen;
+      $lDot.classList.toggle('off', !online);
+      $cDot.classList.toggle('on', online); 
+      $cDot.classList.toggle('off', !online);
+      $cTxt.textContent = online ? 'متصل' : 'قطع';
+      document.getElementById('sBrd').textContent = online ? 'آنلاین' : 'آفلاین';
+      document.getElementById('sBrdI').textContent = online ? '🟢' : '🔴';
+      
+      ['dSens', 'dMcu', 'dEsp'].forEach(id => {
+        const el = document.getElementById(id); 
+        if(el) { el.classList.toggle('on', online); el.classList.toggle('off', !online); }
+      });
+      
+      S.prev = S.cur;
+    })
+    .catch(e => { console.error('[fetchStatus] Error:', e); $lDot.classList.add('off'); });
+}
+
+function updateOrb(st) {
+  $orb.className = 'ob';
+  if(st === 'ARMED') {
+    $orb.classList.add('a'); $orbI.textContent = '🛡️';
+    $oTag.className = 'otg a'; $oTag.textContent = 'ACTIVE';
+    $oTxt.textContent = 'سیستم فعال — در حال محافظت'; $oTxt.style.color = 'var(--grn)';
+    $oSub.textContent = 'همه سنسورها آنلاین';
+  } else if(st === 'TRIGGERED') {
+    $orb.classList.add('t'); $orbI.textContent = '🚨';
+    $oTag.className = 'otg t'; $oTag.textContent = 'ALERT';
+    $oTxt.textContent = 'هشدار: نفوذ تشخیص داده شد!'; $oTxt.style.color = 'var(--red)';
+    $oSub.textContent = 'بلافاصله اقدام کنید';
+  } else {
+    $orb.classList.add('d'); $orbI.textContent = '🔓';
+    $oTag.className = 'otg d'; $oTag.textContent = 'STANDBY';
+    $oTxt.textContent = 'سیستم غیرفعال'; $oTxt.style.color = 'var(--gray)';
+    $oSub.textContent = 'روی سیاره کلیک کنید تا فعال شود';
+  }
+}
+
+function fetchHistory() {
+  fetch('/api/history')
+    .then(r => r.json())
+    .then(list => {
+      S.hist = list;
+      const alarms = list.filter(i => i.type?.includes('ALARM') || i.type?.includes('MANUAL')).length;
+      document.getElementById('sAlerts').textContent = alarms;
+      if(list.length > 0) document.getElementById('sLast').textContent = list[0].time;
+      
+      let html = '';
+      if(!list.length) {
+        html = '<div class="le"><div class="lei">✅</div>هیچ رویدادی ثبت نشده</div>';
+      } else {
+        list.forEach(it => {
+          const sv = getSev(it.type);
+          html += `<div class="lr"><span class="ld d-${sv}"></span><div class="li"><div class="lt">${esc(it.details || '')}</div><div class="lm">${esc(it.time || '')}</div></div><span class="lp p-${sv}">${sevLabel(sv)}</span></div>`;
+        });
+      }
+      document.getElementById('logList').innerHTML = html;
+    })
+    .catch(() => {});
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if(confirm('آیا مطمئن هستید؟ تمام تاریخچه پاک خواهد شد.')) {
+    fetch('/api/history/clear', { method: 'POST', headers: {'Content-Type': 'application/json'} }).then(refresh);
+  }
+});
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  if(!S.hist || !S.hist.length) { toast('داده‌ای برای خروجی وجود ندارد', 'w', 2500); return; }
+  let csv = '\uFEFF' + 'زمان,رویداد,جزئیات,شدت\n';
+  S.hist.forEach(it => {
+    const sv = getSev(it.type);
+    csv += `"${it.time || ''}","${it.type || ''}","${it.details || ''}","${sevLabel(sv)}"\n`;
+  });
+  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); 
+  a.href = url; 
+  a.download = 'alarm_log_' + new Date().toISOString().slice(0, 10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('فایل CSV دانلود شد', 'i', 2500);
+});
+
+document.addEventListener('DOMContentLoaded', checkAuth);
+})();
+</script>
+</body>
+</html>

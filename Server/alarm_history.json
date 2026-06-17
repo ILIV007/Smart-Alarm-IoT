@@ -1,0 +1,492 @@
+[
+  {
+    "timestamp": "2026-06-16T12:51:28.047278",
+    "time": "12:51:28",
+    "date": "2026-06-16",
+    "type": "DISARMED",
+    "details": "غیرفعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:50:21.229373",
+    "time": "12:50:21",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:50:20.209966",
+    "time": "12:50:20",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 716,
+      "ldr": 0,
+      "manual": true,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:45:30.161292",
+    "time": "12:45:30",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:45:21.471841",
+    "time": "12:45:21",
+    "date": "2026-06-16",
+    "type": "DISARMED",
+    "details": "غیرفعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:43:22.484910",
+    "time": "12:43:22",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:43:19.952587",
+    "time": "12:43:19",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 504,
+      "ldr": 1,
+      "manual": true,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:43:16.597213",
+    "time": "12:43:16",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:43:15.445442",
+    "time": "12:43:15",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:43:06.806520",
+    "time": "12:43:06",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 503,
+      "ldr": 138,
+      "manual": true,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:41:48.794807",
+    "time": "12:41:48",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:37:07.628260",
+    "time": "12:37:07",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:36:59.991337",
+    "time": "12:36:59",
+    "date": "2026-06-16",
+    "type": "ALARM",
+    "details": "نفوذ: Intrusion",
+    "sensor_data": {
+      "sensor": "Intrusion",
+      "hall": 461,
+      "ldr": 179,
+      "manual": false,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:36:49.804647",
+    "time": "12:36:49",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:36:45.314789",
+    "time": "12:36:45",
+    "date": "2026-06-16",
+    "type": "ALARM",
+    "details": "نفوذ: Intrusion",
+    "sensor_data": {
+      "sensor": "Intrusion",
+      "hall": 475,
+      "ldr": 344,
+      "manual": false,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:34:18.043640",
+    "time": "12:34:18",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:34:13.318991",
+    "time": "12:34:13",
+    "date": "2026-06-16",
+    "type": "DISARMED",
+    "details": "غیرفعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:31:50.955971",
+    "time": "12:31:50",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:31:49.930433",
+    "time": "12:31:49",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 413,
+      "ldr": 332,
+      "manual": true,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:31:47.254125",
+    "time": "12:31:47",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:30:19.616170",
+    "time": "12:30:19",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:30:18.572806",
+    "time": "12:30:18",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 410,
+      "ldr": 324,
+      "manual": true,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:29:39.448991",
+    "time": "12:29:39",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:29:34.395144",
+    "time": "12:29:34",
+    "date": "2026-06-16",
+    "type": "ALARM",
+    "details": "نفوذ: Intrusion",
+    "sensor_data": {
+      "sensor": "Intrusion",
+      "hall": 500,
+      "ldr": 326,
+      "manual": false,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:29:26.454165",
+    "time": "12:29:26",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T12:29:23.064334",
+    "time": "12:29:23",
+    "date": "2026-06-16",
+    "type": "ALARM",
+    "details": "نفوذ: Intrusion",
+    "sensor_data": {
+      "sensor": "Intrusion",
+      "hall": 501,
+      "ldr": 331,
+      "manual": false,
+      "ip": "192.168.69.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T12:29:13.623901",
+    "time": "12:29:13",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:55:01.139360",
+    "time": "10:55:01",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:54:59.914054",
+    "time": "10:54:59",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 299,
+      "ldr": 17,
+      "manual": true,
+      "ip": "192.168.16.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T10:54:35.670070",
+    "time": "10:54:35",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:54:33.058580",
+    "time": "10:54:33",
+    "date": "2026-06-16",
+    "type": "ALARM",
+    "details": "نفوذ: Intrusion",
+    "sensor_data": {
+      "sensor": "Intrusion",
+      "hall": 451,
+      "ldr": 38,
+      "manual": false,
+      "ip": "192.168.16.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T10:37:37.444895",
+    "time": "10:37:37",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:37:34.154199",
+    "time": "10:37:34",
+    "date": "2026-06-16",
+    "type": "DISARMED",
+    "details": "غیرفعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:37:12.799718",
+    "time": "10:37:12",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:37:09.965057",
+    "time": "10:37:09",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:36:55.713693",
+    "time": "10:36:55",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:36:53.409305",
+    "time": "10:36:53",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 319,
+      "ldr": 24,
+      "manual": true,
+      "ip": "192.168.16.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T10:29:46.939133",
+    "time": "10:29:46",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:27:25.870815",
+    "time": "10:27:25",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:27:24.743675",
+    "time": "10:27:24",
+    "date": "2026-06-16",
+    "type": "MANUAL",
+    "details": "دستی: Touch_3s",
+    "sensor_data": {
+      "sensor": "Touch_3s",
+      "hall": 272,
+      "ldr": 119,
+      "manual": true,
+      "ip": "192.168.16.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T10:27:09.712630",
+    "time": "10:27:09",
+    "date": "2026-06-16",
+    "type": "ALARM",
+    "details": "نفوذ: Intrusion",
+    "sensor_data": {
+      "sensor": "Intrusion",
+      "hall": 463,
+      "ldr": 16,
+      "manual": false,
+      "ip": "192.168.16.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T10:26:09.245903",
+    "time": "10:26:09",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:26:07.006563",
+    "time": "10:26:07",
+    "date": "2026-06-16",
+    "type": "DISARMED",
+    "details": "غیرفعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:24:09.199154",
+    "time": "10:24:09",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:23:52.641899",
+    "time": "10:23:52",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:23:47.738897",
+    "time": "10:23:47",
+    "date": "2026-06-16",
+    "type": "ALARM",
+    "details": "نفوذ: Intrusion",
+    "sensor_data": {
+      "sensor": "Intrusion",
+      "hall": 467,
+      "ldr": 8,
+      "manual": false,
+      "ip": "192.168.16.145"
+    }
+  },
+  {
+    "timestamp": "2026-06-16T10:23:33.507266",
+    "time": "10:23:33",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:23:23.775125",
+    "time": "10:23:23",
+    "date": "2026-06-16",
+    "type": "DISARMED",
+    "details": "غیرفعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:22:40.339954",
+    "time": "10:22:40",
+    "date": "2026-06-16",
+    "type": "ARMED",
+    "details": "فعال از داشبورد",
+    "sensor_data": {}
+  },
+  {
+    "timestamp": "2026-06-16T10:22:38.607502",
+    "time": "10:22:38",
+    "date": "2026-06-16",
+    "type": "DISARMED",
+    "details": "غیرفعال از داشبورد",
+    "sensor_data": {}
+  }
+]

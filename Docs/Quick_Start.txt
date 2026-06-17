@@ -1,0 +1,18 @@
+Quick Start Guide 
+1. Upload firmware to ATmega328P and ESP8266 
+2. Install Python dependencies: pip install -r Server/requirements.txt 
+3. Run server: python Server/app.py 
+.
+.
+.
+🚀 راه‌اندازی سریع - روز ارائه
+
+1. گوشی: هات‌اسپات با نام "SmartHome" و رمز "12345678" (باند 2.4GHz)
+2. لپ‌تاپ: اتصال به همین هات‌اسپات
+3. اجرای سرور:
+   cd Server
+   python app.py
+4. برد: DIP Switch روی حالت اجرا (2,3,4=ON) + Reset
+5. مرورگر: http://192.168.43.100:5000
+
+✅ آماده‌ی دمو!
